@@ -45,18 +45,23 @@ Deno.serve(async (req) => {
     let city = "Unknown";
     let region = "Unknown";
 
-    // Use client IP for geo lookup
+    // Use external Geo backend (MMDB) for geo lookup
     try {
-      const geoUrl = clientIP
-        ? `https://ipapi.co/${clientIP}/json/`
-        : "https://ipapi.co/json/";
-      const geoRes = await fetch(geoUrl, {
-        headers: { "User-Agent": "lovable-qr-tracker/1.0" },
+      const geoBaseUrl =
+        Deno.env.get("GEO_BACKEND_URL") || "http://localhost:4000/geo";
+      const url = new URL(geoBaseUrl);
+      if (clientIP) {
+        url.searchParams.set("ip", clientIP);
+      }
+
+      const geoRes = await fetch(url.toString(), {
+        headers: { "User-Agent": "qr-geo-tracker/1.0" },
       });
+
       if (geoRes.ok) {
         const geo = await geoRes.json();
         if (!geo.error) {
-          country = geo.country_name || "Unknown";
+          country = geo.country || "Unknown";
           city = geo.city || "Unknown";
           region = geo.region || "Unknown";
         }
