@@ -1,8 +1,9 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { getTargetUrl } from '@/lib/qrDataEncoder';
 import { QRType } from '@/types/qr';
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000';
 import { FileText, Play, Image, Eye, Music, Globe, ArrowRight, Smartphone } from 'lucide-react';
 
 interface QRRow {
@@ -30,14 +31,16 @@ export default function ViewQR() {
         return;
       }
 
-      // `track-scan` also returns the QR payload (server-side check for paused/not found)
-      const { data, error } = await supabase.functions.invoke('track-scan', {
-        body: { qr_code_id: id },
+      const res = await fetch(`${BACKEND_URL}/track-scan`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ qr_code_id: id }),
       });
 
-      const qr = (data as any)?.qr_code as QRRow | undefined;
+      const data = await res.json().catch(() => ({}));
+      const qr = data?.qr_code as QRRow | undefined;
 
-      if (error || !qr || qr.paused) {
+      if (!res.ok || !qr || qr.paused) {
         setNotFound(true);
         return;
       }
