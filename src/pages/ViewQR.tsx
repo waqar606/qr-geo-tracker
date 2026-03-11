@@ -2,9 +2,10 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getTargetUrl } from '@/lib/qrDataEncoder';
 import { QRType } from '@/types/qr';
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000';
 import { FileText, Play, Image, Eye, Music, Globe, ArrowRight, Smartphone } from 'lucide-react';
+
+// const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://depravingly-saprogenic-jacquie.ngrok-free.dev';
 
 interface QRRow {
   id: string;
