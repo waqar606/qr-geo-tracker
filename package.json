@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "backend:dev": "node backend/server.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -46,11 +47,15 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
+    "cors": "^2.8.5",
     "date-fns": "^3.6.0",
+    "dotenv": "^16.6.1",
     "embla-carousel-react": "^8.6.0",
+    "express": "^4.21.2",
     "file-saver": "^2.0.5",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.462.0",
+    "maxmind": "^5.0.5",
     "next-themes": "^0.3.0",
     "qr-code-styling": "^1.9.2",
     "react": "^18.3.1",
